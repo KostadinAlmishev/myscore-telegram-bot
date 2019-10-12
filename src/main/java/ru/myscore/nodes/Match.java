@@ -37,7 +37,7 @@ public class Match {
     }
 
     private boolean _check(Team a, Team b) {
-        return a.getFirstQuarter() > b.getSecondQuarter() &&
+        return a.getFirstQuarter() > b.getFirstQuarter() &&
             a.getSecondQuarter() < b.getSecondQuarter() &&
             a.getThirdQuarter() < b.getThirdQuarter();
     }
