@@ -1,7 +1,5 @@
 package ru.myscore.nodes;
 
-import com.sun.webkit.ContextMenu;
-
 public class Match {
     private Team home = null;
     private Team away = null;
