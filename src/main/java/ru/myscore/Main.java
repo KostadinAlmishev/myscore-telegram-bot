@@ -32,7 +32,7 @@ public class Main {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
 
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
     }
 
     private static void closeDriver() {
