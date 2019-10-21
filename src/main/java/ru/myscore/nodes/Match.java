@@ -1,5 +1,7 @@
 package ru.myscore.nodes;
 
+import com.sun.webkit.ContextMenu;
+
 public class Match {
     private Team home = null;
     private Team away = null;
@@ -50,4 +52,24 @@ public class Match {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        Match other = (Match) obj;
+        return home.equals(other.getHome()) &&
+                away.equals(other.getAway());
+    }
+
+    @Override
+    public int hashCode() {
+        return home.hashCode() + away.hashCode();
+    }
 }

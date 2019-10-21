@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import ru.myscore.history.History;
 import ru.myscore.nodes.Match;
 import ru.myscore.nodes.Team;
@@ -28,6 +29,8 @@ public class Main {
     private static void configDriver() {
         String pathToChromeDriver = "lib/chromedriver";
         System.setProperty("webdriver.chrome.driver", pathToChromeDriver);
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
 
         driver = new ChromeDriver();
     }

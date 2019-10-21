@@ -59,4 +59,27 @@ public class Team {
                 ", thirdQuarter=" + thirdQuarter +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        Team other = (Team) obj;
+        return participant.equals(other.getParticipant()) &&
+                firstQuarter == other.firstQuarter &&
+                secondQuarter == other.secondQuarter &&
+                thirdQuarter == other.thirdQuarter;
+    }
+
+    @Override
+    public int hashCode() {
+        return participant.hashCode() + firstQuarter + secondQuarter + thirdQuarter;
+    }
 }
