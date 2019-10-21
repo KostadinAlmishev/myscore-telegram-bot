@@ -30,7 +30,7 @@ public class Main {
         String pathToChromeDriver = "lib/chromedriver";
         System.setProperty("webdriver.chrome.driver", pathToChromeDriver);
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+        options.addArguments("--headless", "--no-sandbox", "--disable-dev-shm-usage");
 
         driver = new ChromeDriver(options);
     }
