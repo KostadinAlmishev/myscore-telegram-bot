@@ -105,8 +105,6 @@ public class Bot extends AbilityBot {
             msgText.append("/demote @username \n");
             msgText.append("/ban @username \n");
             msgText.append("/unban @username \n");
-            msgText.append("/addSeller @username\n");
-            msgText.append("/removeSeller @username");
         }
 
 

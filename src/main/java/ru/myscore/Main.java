@@ -59,9 +59,11 @@ public class Main {
         while (true) {
             String source = "";
             try {
+                driver.navigate().refresh();
+                Thread.sleep(10 * 1000); // Wait page to be loaded
                 source = driver.getPageSource();
             } catch (Exception e) {
-                logger.error(MYAPP_MARKER, "Can't get page source (Don't close web browser)");
+                logger.error(MYAPP_MARKER, "Can't get page source \n" + e.getMessage());
             }
 
             Document document = Jsoup.parse(source);
@@ -99,7 +101,7 @@ public class Main {
                 }
             }
 
-            Thread.sleep(100 * 1000);
+            Thread.sleep(90 * 1000);
         }
     }
 }
