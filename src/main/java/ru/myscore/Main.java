@@ -36,8 +36,9 @@ public class Main {
     }
 
     private static void closeDriver() {
-        driver.close();
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
 
@@ -48,9 +49,7 @@ public class Main {
         configDriver();
     }
 
-    public static void main(String[] args) throws Exception {
-        init();
-
+    private static void mainLogic() throws Exception {
         final String URL = "https://www.myscore.ru/basketball";
 
         driver.get(URL);
@@ -59,9 +58,8 @@ public class Main {
         while (true) {
             String source = "";
             try {
-                driver.navigate().refresh();
-                Thread.sleep(10 * 1000); // Wait page to be loaded
                 source = driver.getPageSource();
+                driver.navigate().refresh();
             } catch (Exception e) {
                 logger.error(MYAPP_MARKER, "Can't get page source \n" + e.getMessage());
             }
@@ -101,7 +99,19 @@ public class Main {
                 }
             }
 
-            Thread.sleep(90 * 1000);
+            Thread.sleep(100 * 1000);
         }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+        init();
+
+        try {
+            mainLogic();
+        } catch (InterruptedException e) {  // ctrl + c
+            closeDriver();
+        }
+
     }
 }
