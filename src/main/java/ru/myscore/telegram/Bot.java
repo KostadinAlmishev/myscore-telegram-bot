@@ -24,7 +24,7 @@ public class Bot extends AbilityBot {
 
     public Bot(String token, String username, DefaultBotOptions options) {
         // bot token, bot username, bot options
-        super(token, username);
+        super(token, username, options);
     }
 
     @Override
@@ -68,11 +68,7 @@ public class Bot extends AbilityBot {
     }
 
     public void sendToCreator(String msg) {
-        try {
-            silent.send(msg, (long) getMe().getId());
-        } catch (TelegramApiException e) {
-            logger.error(MYAPP_MARKER, "Can not send msg '" + msg + "' to creator\n" + e.getMessage());
-        }
+        silent.send(msg, creatorId());
     }
 
     public void send(Match node) {
