@@ -67,6 +67,14 @@ public class Bot extends AbilityBot {
 
     }
 
+    public void sendToCreator(String msg) {
+        try {
+            silent.send(msg, (long) getMe().getId());
+        } catch (TelegramApiException e) {
+            logger.error(MYAPP_MARKER, "Can not send msg '" + msg + "' to creator\n" + e.getMessage());
+        }
+    }
+
     public void send(Match node) {
         Team home = node.getHome();
         Team away = node.getAway();

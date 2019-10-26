@@ -19,12 +19,13 @@ import static ru.myscore.logger.Log4j2Logger.MYAPP_MARKER;
 
 public class Main {
 
+    private static final String URL = "https://www.myscore.ru/basketball";
     private static final Logger logger = LogManager.getLogger(Main.class);
     private static final History history = new History();
 
-    private static WebDriver driver;
-    private static BotConfig botConfig;
-    private static Bot bot;
+    private static ChromeDriver driver = null;
+    private static BotConfig botConfig = null;
+    private static Bot bot = null;
 
     private static void configDriver() {
         String pathToChromeDriver = "lib/chromedriver";
@@ -49,11 +50,12 @@ public class Main {
         configDriver();
     }
 
-    private static void mainLogic() throws Exception {
-        final String URL = "https://www.myscore.ru/basketball";
-
+    private static void loadPage() throws InterruptedException {
         driver.get(URL);
         Thread.sleep(8 * 1000);
+    }
+
+    private static void mainLogic() throws Exception {
 
         while (true) {
             String source = "";
@@ -62,6 +64,13 @@ public class Main {
                 driver.navigate().refresh();
             } catch (Exception e) {
                 logger.error(MYAPP_MARKER, "Can't get page source \n" + e.getMessage());
+                // restard driver
+                bot.sendToCreator("Driver recreation");
+                closeDriver();
+                driver = null;
+                configDriver();
+                loadPage();
+                continue;
             }
 
             Document document = Jsoup.parse(source);
@@ -106,12 +115,14 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         init();
+        bot.sendToCreator("Driver was created");
 
         try {
             mainLogic();
         } catch (InterruptedException e) {  // ctrl + c
             closeDriver();
+            bot.sendToCreator("Driver was closed");
+            throw e;
         }
-
     }
 }
