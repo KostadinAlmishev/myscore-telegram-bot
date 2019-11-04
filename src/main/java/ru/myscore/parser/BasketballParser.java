@@ -31,27 +31,26 @@ public class BasketballParser {
             BasketballTeam home = new BasketballTeam();
             BasketballTeam away = new BasketballTeam();
 
+            home.setParticipant(getElementData(el, "div.event__participant--home"));
+            away.setParticipant(getElementData(el, "div.event__participant--away"));
 
-            home.setParticipant(el.selectFirst("div.event__participant--home").ownText());
-            away.setParticipant(el.selectFirst("div.event__participant--away").ownText());
+            home.setFirstQuarter(getElementData(el, "div.event__part--home.event__part--1"));
+            away.setFirstQuarter(getElementData(el, "div.event__part--away.event__part--1"));
 
-            home.setFirstQuarter(el.selectFirst("div.event__part--home.event__part--1").ownText());
-            away.setFirstQuarter(el.selectFirst("div.event__part--away.event__part--1").ownText());
+            home.setSecondQuarter(getElementData(el, "div.event__part--home.event__part--2"));
+            away.setSecondQuarter(getElementData(el, "div.event__part--away.event__part--2"));
 
-            home.setSecondQuarter(el.selectFirst("div.event__part--home.event__part--2").ownText());
-            away.setSecondQuarter(el.selectFirst("div.event__part--away.event__part--2").ownText());
+            home.setThirdQuarter(getElementData(el, "div.event__part--home.event__part--3"));
+            away.setThirdQuarter(getElementData(el, "div.event__part--away.event__part--3"));
 
-            home.setThirdQuarter(el.selectFirst("div.event__part--home.event__part--3").ownText());
-            away.setThirdQuarter(el.selectFirst("div.event__part--away.event__part--3").ownText());
+            home.setFourthQuarter(getElementData(el, "div.event__part--home.event__part--4"));
+            away.setFourthQuarter(getElementData(el, "div.event__part--away.event__part--4"));
 
-            home.setFourthQuarter(el.selectFirst("div.event__part--home.event__part--4").ownText());
-            away.setFourthQuarter(el.selectFirst("div.event__part--away.event__part--4").ownText());
-
-            home.setFifthQuarter(el.selectFirst("div.event__part--home.event__part--5").ownText());
-            away.setFifthQuarter(el.selectFirst("div.event__part--away.event__part--5").ownText());
+            home.setFifthQuarter(getElementData(el, "div.event__part--home.event__part--5"));
+            away.setFifthQuarter(getElementData(el, "div.event__part--away.event__part--5"));
 
             currMatch.setHome(home);
-            currMatch.setHome(away);
+            currMatch.setAway(away);
             currMatch.setCurrPart(getQuarter(el));
             currMatch.setCurrMinute(getMinute(el));
 
@@ -62,6 +61,15 @@ public class BasketballParser {
 
         return result;
     }
+
+    private String getElementData(Element el, String selector) {
+        Element selected = el.selectFirst(selector);
+        if (selected == null)
+            return "";
+
+        return selected.ownText();
+    }
+
 
     private BasketballQuarter getQuarter(Element el) {
         if (el.toString().contains("1-я четверть")) {

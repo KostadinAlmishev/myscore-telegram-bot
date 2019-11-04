@@ -1,9 +1,10 @@
 package ru.myscore.parser.filter;
 
 import ru.myscore.nodes.BasketballMatch;
+import ru.myscore.nodes.BasketballQuarter;
 import ru.myscore.nodes.BasketballTeam;
 
-public class WinsFirstLoosesSecondAndThirdFilter implements BasketballMatchFilter {
+public class WinsFirstLoosesSecondAndThirdThirdQuarterFilter implements BasketballMatchFilter {
 
 
     @Override
@@ -11,7 +12,8 @@ public class WinsFirstLoosesSecondAndThirdFilter implements BasketballMatchFilte
         BasketballTeam a = m.getHome();
         BasketballTeam b = m.getAway();
 
-        return _check(a, b) || _check(b, a);
+        return m.getCurrPart() == BasketballQuarter.THIRD && m.getCurrMinute() == 2 &&
+                (_check(a, b) || _check(b, a));
     }
 
     private boolean _check(BasketballTeam a, BasketballTeam b) {

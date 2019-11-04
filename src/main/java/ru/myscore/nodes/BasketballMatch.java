@@ -7,7 +7,6 @@ public class BasketballMatch {
     private BasketballQuarter currPart = BasketballQuarter.NOT_STARTED;
     private int currMinute = 0;
 
-
     public BasketballMatch() {
     }
 
@@ -22,6 +21,27 @@ public class BasketballMatch {
 
     public void setCurrPart(BasketballQuarter currPart) {
         this.currPart = currPart;
+    }
+
+    public String getQuarter() {
+        switch (currPart) {
+            case NOT_STARTED:
+                return "NOT STARTED";
+            case FIRST:
+                return "FIRST QUARTER";
+            case SECOND:
+                return "SECOND QUARTER";
+            case THIRD:
+                return "THIRD QUARTER";
+            case FOURTH:
+                return "FOURTH QUARTER";
+            case ENDED_OVERTIME:
+                return "OVERTIME";
+            case ENDED:
+                return "ENDED";
+        }
+
+        return "";
     }
 
     public BasketballTeam getHome() {
@@ -46,20 +66,6 @@ public class BasketballMatch {
 
     public void setCurrMinute(int currMinute) {
         this.currMinute = currMinute;
-    }
-
-    public boolean check() {
-        if (home == null || away == null) {
-            return false;
-        }
-
-        return _check(home, away) || _check(away, home);
-    }
-
-    private boolean _check(BasketballTeam a, BasketballTeam b) {
-        return a.getFirstQuarter() > b.getFirstQuarter() &&
-            a.getSecondQuarter() < b.getSecondQuarter() &&
-            a.getThirdQuarter() < b.getThirdQuarter();
     }
 
     @Override

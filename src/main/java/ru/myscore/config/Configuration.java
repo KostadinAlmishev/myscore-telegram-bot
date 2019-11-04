@@ -28,6 +28,7 @@ public class Configuration implements AutoCloseable, Runnable {
     private final List<Thread> threadsInside = new ArrayList<>();
 
     public Configuration() {
+        basketballParser = new BasketballParser();
         browserService = new BrowserService();
         basketballService = new BasketballService(browserService, basketballParser, URL);
         realTimeService = new RealTimeService(bot, basketballService);
@@ -35,7 +36,6 @@ public class Configuration implements AutoCloseable, Runnable {
         botConfig = new BotConfig(basketballService);
         bot = botConfig.getBot();
 
-        basketballParser = new BasketballParser();
     }
 
 

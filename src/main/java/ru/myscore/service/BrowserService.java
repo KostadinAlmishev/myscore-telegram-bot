@@ -22,19 +22,39 @@ public class BrowserService implements AutoCloseable {
     }
 
     public String getSource(String url) {
+        synchronized (chromeDriver) {
+            try {
+                chromeDriver.get(url);
+                try {
+                    chromeDriver.wait(waitAfterWait);
+                } catch (InterruptedException ignored) { }
 
-        chromeDriver.get(url);
-        try {
-            Thread.sleep(waitAfterWait);
-        } catch (InterruptedException ignored) {
-
+                return chromeDriver.getPageSource();
+            } catch (Exception e) {
+                reload();
+            }
         }
-
-        return chromeDriver.getPageSource();
+        return "";
     }
 
     public String getCurrSource() {
-        return chromeDriver.getPageSource();
+        synchronized (chromeDriver) {
+            try {
+                return chromeDriver.getPageSource();
+            } catch (Exception e) {
+                reload();
+            }
+        }
+        return "";
+    }
+
+    public void reload() {
+        synchronized (chromeDriver) {
+            chromeDriver.navigate().refresh();
+            try {
+                chromeDriver.wait(waitAfterWait);
+            } catch (InterruptedException ignored) {}
+        }
     }
 
     @Override

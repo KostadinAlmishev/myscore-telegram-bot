@@ -1,5 +1,6 @@
 package ru.myscore.telegram;
 
+import com.google.inject.internal.cglib.core.$CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.telegram.abilitybots.api.bot.AbilityBot;
@@ -8,6 +9,7 @@ import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.myscore.nodes.BasketballMatch;
+import ru.myscore.nodes.BasketballQuarter;
 import ru.myscore.nodes.BasketballTeam;
 import ru.myscore.service.BasketballService;
 
@@ -90,12 +92,13 @@ public class Bot extends AbilityBot {
     public Ability getAllParsed() {
         return Ability
                 .builder()
-                .name("getAllParsed")
-                .info("Спарсить все (1-ая чет. победа, 2-3 поражение")
+                .name("getallparsed")
+                .info("Спарсить все")
                 .locality(ALL)
                 .privacy(PUBLIC)
                 .action(ctx -> {
                     List<BasketballMatch> matches = basketballService.getWonFirstLostSecondAndThird();
+
                     if (matches.isEmpty()) {
                         silent.send("Can not find", ctx.chatId());
                     } else {
@@ -103,6 +106,20 @@ public class Bot extends AbilityBot {
                             silent.sendMd(formatMatch(match), ctx.chatId());
                         }
                     }
+                })
+                .build();
+    }
+
+    public Ability reload() {
+        return Ability
+                .builder()
+                .name("reload")
+                .info("перезагрузить страницу")
+                .locality(ALL)
+                .privacy(PUBLIC)
+                .action(ctx -> {
+                    basketballService.reload();
+                    silent.send("Reloaded", ctx.chatId());
                 })
                 .build();
     }
@@ -159,19 +176,22 @@ public class Bot extends AbilityBot {
 
     private String formatMatch(BasketballMatch match) {
         BasketballTeam home = match.getHome();
-        BasketballTeam away = match.getHome();
+        BasketballTeam away = match.getAway();
+
 
         return String.format("*%s : %s*\n```" +
-                        " home %2d %2d %2d\n" +
-                        "      %2d %2d\n" +
-                        " away %2d %2d %2d %2d %2d\n",
-                "      %2d %2d```" +
-                        home.getParticipant(), away.getParticipant(),
+                        " home %2d %2d %2d %2d %2d\n" +
+                        " away %2d %2d %2d %2d %2d\n" +
+                        "%30s\n" +
+                        "%26d min```",
+                home.getParticipant(), away.getParticipant(),
 
-                home.getFirstQuarter(), home.getSecondQuarter(),
-                home.getThirdQuarter(), home.getFourthQuarter(), home.getFifthQuarter(),
+                home.getFirstQuarter(), home.getSecondQuarter(), home.getThirdQuarter(),
+                home.getFourthQuarter(), home.getFifthQuarter(),
 
-                away.getFirstQuarter(), away.getSecondQuarter(),
-                away.getThirdQuarter(), away.getFourthQuarter(), away.getFifthQuarter());
+                away.getFirstQuarter(), away.getSecondQuarter(), away.getThirdQuarter(),
+                away.getFourthQuarter(), away.getFifthQuarter(),
+
+                match.getQuarter(), match.getCurrMinute());
     }
 }

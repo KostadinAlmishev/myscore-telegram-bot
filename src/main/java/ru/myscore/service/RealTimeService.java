@@ -21,7 +21,7 @@ public class RealTimeService implements Runnable {
     public void run() {
         while (true) {
 
-            List<BasketballMatch> matches = basketballService.getWonFirstLostSecondAndThird();
+            List<BasketballMatch> matches = basketballService.getWonFirstLostSecondAndThirdThirdQuarter();
 
             for (BasketballMatch match : matches) {
                 if (!history.contains(match)) {
@@ -32,9 +32,7 @@ public class RealTimeService implements Runnable {
 
             try {
                 Thread.sleep(100 * 1000);
-            } catch (InterruptedException ignored) {
-
-            }
+            } catch (InterruptedException ignored) { }
         }
 
     }

@@ -4,6 +4,7 @@ import ru.myscore.nodes.BasketballMatch;
 import ru.myscore.parser.BasketballParser;
 import ru.myscore.parser.filter.BasketballDummyFilter;
 import ru.myscore.parser.filter.WinsFirstLoosesSecondAndThirdFilter;
+import ru.myscore.parser.filter.WinsFirstLoosesSecondAndThirdThirdQuarterFilter;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,13 +15,16 @@ public class BasketballService {
     private String url = "";
 
     // Filters
-    private BasketballDummyFilter dummyFilter = new BasketballDummyFilter();
-    private WinsFirstLoosesSecondAndThirdFilter winsFirstLoosesSecondAndThirdFilter = new WinsFirstLoosesSecondAndThirdFilter();
+    private final WinsFirstLoosesSecondAndThirdFilter winsFirstLoosesSecondAndThirdFilter = new WinsFirstLoosesSecondAndThirdFilter();
+    private final WinsFirstLoosesSecondAndThirdThirdQuarterFilter winsFirstLoosesSecondAndThirdThirdQuarterFilter =
+            new WinsFirstLoosesSecondAndThirdThirdQuarterFilter();
 
     public BasketballService(@NotNull BrowserService browserService, @NotNull BasketballParser basketballParser, @NotNull String url) {
         this.browserService = browserService;
         this.basketballParser = basketballParser;
         this.url = url;
+
+        browserService.getSource(url);
     }
 
     public List<BasketballMatch> getAll() {
@@ -29,8 +33,17 @@ public class BasketballService {
     }
 
     public List<BasketballMatch> getWonFirstLostSecondAndThird() {
-        String src = browserService.getSource(url);
+        String src = browserService.getCurrSource();
         return basketballParser.parseMatches(src, winsFirstLoosesSecondAndThirdFilter);
+    }
+
+    public List<BasketballMatch> getWonFirstLostSecondAndThirdThirdQuarter() {
+        String src = browserService.getCurrSource();
+        return basketballParser.parseMatches(src, winsFirstLoosesSecondAndThirdThirdQuarterFilter);
+    }
+
+    public void reload() {
+        browserService.reload();
     }
 
 }
