@@ -1,31 +1,51 @@
 package ru.myscore.nodes;
 
-public class Match {
-    private Team home = null;
-    private Team away = null;
+public class BasketballMatch {
 
-    public Match() {
+    private BasketballTeam home = null;
+    private BasketballTeam away = null;
+    private BasketballQuarter currPart = BasketballQuarter.NOT_STARTED;
+    private int currMinute = 0;
+
+
+    public BasketballMatch() {
     }
 
-    public Match(Team home, Team away) {
+    public BasketballMatch(BasketballTeam home, BasketballTeam away, BasketballQuarter part) {
         this.home = home;
         this.away = away;
     }
 
-    public Team getHome() {
+    public BasketballQuarter getCurrPart() {
+        return currPart;
+    }
+
+    public void setCurrPart(BasketballQuarter currPart) {
+        this.currPart = currPart;
+    }
+
+    public BasketballTeam getHome() {
         return home;
     }
 
-    public void setHome(Team home) {
+    public void setHome(BasketballTeam home) {
         this.home = home;
     }
 
-    public Team getAway() {
+    public BasketballTeam getAway() {
         return away;
     }
 
-    public void setAway(Team away) {
+    public void setAway(BasketballTeam away) {
         this.away = away;
+    }
+
+    public int getCurrMinute() {
+        return currMinute;
+    }
+
+    public void setCurrMinute(int currMinute) {
+        this.currMinute = currMinute;
     }
 
     public boolean check() {
@@ -36,7 +56,7 @@ public class Match {
         return _check(home, away) || _check(away, home);
     }
 
-    private boolean _check(Team a, Team b) {
+    private boolean _check(BasketballTeam a, BasketballTeam b) {
         return a.getFirstQuarter() > b.getFirstQuarter() &&
             a.getSecondQuarter() < b.getSecondQuarter() &&
             a.getThirdQuarter() < b.getThirdQuarter();
@@ -61,7 +81,7 @@ public class Match {
         if (getClass() != obj.getClass())
             return false;
 
-        Match other = (Match) obj;
+        BasketballMatch other = (BasketballMatch) obj;
         return home.equals(other.getHome()) &&
                 away.equals(other.getAway());
     }

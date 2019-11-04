@@ -2,12 +2,10 @@ package ru.myscore.history;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.myscore.nodes.Match;
+import ru.myscore.nodes.BasketballMatch;
 
 import java.time.Duration;
-import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,34 +14,34 @@ import java.util.concurrent.TimeUnit;
 import static ru.myscore.logger.Log4j2Logger.MYAPP_MARKER;
 
 public class History {
-    private final HashSet<Match> matchHashSet = new HashSet<Match>();
-    private Match prev = null;
-    private Match prevPrev = null;
+    private final HashSet<BasketballMatch> basketballMatchHashSet = new HashSet<BasketballMatch>();
+    private BasketballMatch prev = null;
+    private BasketballMatch prevPrev = null;
     private final Logger logger = LogManager.getLogger(History.class);
 
     public History() {
         scheduleClear();
     }
 
-    public boolean add(Match match) {
+    public boolean add(BasketballMatch basketballMatch) {
         prevPrev = prev;
-        prev = match;
+        prev = basketballMatch;
 
-        return matchHashSet.add(match);
+        return basketballMatchHashSet.add(basketballMatch);
     }
 
-    public boolean contains(Match match) {
-        return matchHashSet.contains(match);
+    public boolean contains(BasketballMatch basketballMatch) {
+        return basketballMatchHashSet.contains(basketballMatch);
     }
 
     // Don't delete last two
     public void clear() {
         logger.info(MYAPP_MARKER, "History was cleared");
-        matchHashSet.clear();
+        basketballMatchHashSet.clear();
         if (prev != null)
-            matchHashSet.add(prev);
+            basketballMatchHashSet.add(prev);
         if (prevPrev != null)
-            matchHashSet.add(prevPrev);
+            basketballMatchHashSet.add(prevPrev);
     }
 
     private void scheduleClear() {

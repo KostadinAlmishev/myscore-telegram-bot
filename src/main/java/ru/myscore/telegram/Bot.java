@@ -7,10 +7,12 @@ import org.telegram.abilitybots.api.objects.Ability;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.myscore.nodes.Match;
-import ru.myscore.nodes.Team;
+import ru.myscore.nodes.BasketballMatch;
+import ru.myscore.nodes.BasketballTeam;
+import ru.myscore.service.BasketballService;
 
 import java.util.HashSet;
+import java.util.List;
 
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
@@ -20,11 +22,13 @@ public class Bot extends AbilityBot {
 
     private final HashSet<Long> chats = new HashSet<Long>();
     private final Logger logger = LogManager.getLogger(AbilityBot.class);
+    private BasketballService basketballService = null;
 
 
-    public Bot(String token, String username, DefaultBotOptions options) {
+    public Bot(String token, String username, DefaultBotOptions options, BasketballService basketballService) {
         // bot token, bot username, bot options
         super(token, username, options);
+        this.basketballService = basketballService;
     }
 
     @Override
@@ -34,7 +38,6 @@ public class Bot extends AbilityBot {
 
     @SuppressWarnings("Kek")
     public Ability help() {
-
 
         return Ability
                 .builder()
@@ -64,25 +67,55 @@ public class Bot extends AbilityBot {
                     }
                 })
                 .build();
+    }
 
+    public Ability unregChat() {
+        return Ability
+                .builder()
+                .name("unreg")
+                .info("Добавить чат")
+                .locality(ALL)
+                .privacy(PUBLIC)
+                .action(ctx -> {
+                    if (chats.remove(ctx.chatId())) {
+                        silent.send("Removed", ctx.chatId());
+                        logger.info(MYAPP_MARKER, "Removed " + ctx.chatId());
+                    } else {
+                        silent.send("You are not in registered ", ctx.chatId());
+                    }
+                })
+                .build();
+    }
+
+    public Ability getAllParsed() {
+        return Ability
+                .builder()
+                .name("getAllParsed")
+                .info("Спарсить все (1-ая чет. победа, 2-3 поражение")
+                .locality(ALL)
+                .privacy(PUBLIC)
+                .action(ctx -> {
+                    List<BasketballMatch> matches = basketballService.getWonFirstLostSecondAndThird();
+                    if (matches.isEmpty()) {
+                        silent.send("Can not find", ctx.chatId());
+                    } else {
+                        for (BasketballMatch match : matches) {
+                            silent.sendMd(formatMatch(match), ctx.chatId());
+                        }
+                    }
+                })
+                .build();
     }
 
     public void sendToCreator(String msg) {
         silent.send(msg, creatorId());
     }
 
-    public void send(Match node) {
-        Team home = node.getHome();
-        Team away = node.getAway();
-
-        String msg = String.format("*%s : %s*\n```" +
-                        " home %2d %2d %2d\n" +
-                        " away %2d %2d %2d```",
-                home.getParticipant(), away.getParticipant(),
-                home.getFirstQuarter(), home.getSecondQuarter(), home.getThirdQuarter(),
-                away.getFirstQuarter(), away.getSecondQuarter(), away.getThirdQuarter());
+    public void send(BasketballMatch node) {
+        String msg = formatMatch(node);
 
         SendMessage sendMessage = new SendMessage();
+
         sendMessage.setText(msg);
         sendMessage.enableMarkdown(true);
 
@@ -93,7 +126,7 @@ public class Bot extends AbilityBot {
                 execute(sendMessage);
                 logger.info(MYAPP_MARKER, "Sended\n" + msg);
             } catch (Exception e) {
-                logger.error(MYAPP_MARKER, "Can not send to telegram!", e);
+                logger.error(MYAPP_MARKER, "Can not send to telegram! chat: " + chat);
             }
         }
 
@@ -122,5 +155,23 @@ public class Bot extends AbilityBot {
         } catch (TelegramApiException e) {
             logger.error(MYAPP_MARKER, "Can not send help message to " + chatId, e);
         }
+    }
+
+    private String formatMatch(BasketballMatch match) {
+        BasketballTeam home = match.getHome();
+        BasketballTeam away = match.getHome();
+
+        return String.format("*%s : %s*\n```" +
+                        " home %2d %2d %2d\n" +
+                        "      %2d %2d\n" +
+                        " away %2d %2d %2d %2d %2d\n",
+                "      %2d %2d```" +
+                        home.getParticipant(), away.getParticipant(),
+
+                home.getFirstQuarter(), home.getSecondQuarter(),
+                home.getThirdQuarter(), home.getFourthQuarter(), home.getFifthQuarter(),
+
+                away.getFirstQuarter(), away.getSecondQuarter(),
+                away.getThirdQuarter(), away.getFourthQuarter(), away.getFifthQuarter());
     }
 }

@@ -7,6 +7,7 @@ import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.myscore.service.BasketballService;
 
 import static ru.myscore.logger.Log4j2Logger.MYAPP_MARKER;
 
@@ -22,7 +23,7 @@ public class BotConfig {
 
     private Bot bot;
 
-    public BotConfig() {
+    public BotConfig(BasketballService basketballService) {
         // Initializes dependencies necessary for the base bot - Guice
         ApiContextInitializer.init();
 
@@ -35,7 +36,7 @@ public class BotConfig {
         // botOptions.setProxyPort(PROXY_PORT);
         // botOptions.setProxyType(DefaultBotOptions.ProxyType.SOCKS5);
 
-        bot = new Bot(BOT_TOKEN, BOT_USERNAME, botOptions);
+        bot = new Bot(BOT_TOKEN, BOT_USERNAME, botOptions, basketballService);
         try {
             // Register your newly created AbilityBot
             botsApi.registerBot(bot);
