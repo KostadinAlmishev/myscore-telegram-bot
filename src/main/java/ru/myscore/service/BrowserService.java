@@ -22,6 +22,7 @@ public class BrowserService implements AutoCloseable {
     }
 
     public String getSource(String url) {
+
         chromeDriver.get(url);
         try {
             Thread.sleep(waitAfterWait);
@@ -38,6 +39,7 @@ public class BrowserService implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
+
         if (chromeDriver != null) {
             // Don't close browser
             chromeDriver.quit();
