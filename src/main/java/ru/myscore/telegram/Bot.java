@@ -73,7 +73,7 @@ public class Bot extends AbilityBot {
         return Ability
                 .builder()
                 .name("unreg")
-                .info("Добавить чат")
+                .info("Удалить чат")
                 .locality(ALL)
                 .privacy(PUBLIC)
                 .action(ctx -> {
