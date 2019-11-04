@@ -182,8 +182,8 @@ public class Bot extends AbilityBot {
         return String.format("*%s : %s*\n```" +
                         " home %2d %2d %2d %2d %2d\n" +
                         " away %2d %2d %2d %2d %2d\n" +
-                        "%30s\n" +
-                        "%26d min```",
+                        "%20s\n" +
+                        "%16d min```",
                 home.getParticipant(), away.getParticipant(),
 
                 home.getFirstQuarter(), home.getSecondQuarter(), home.getThirdQuarter(),
