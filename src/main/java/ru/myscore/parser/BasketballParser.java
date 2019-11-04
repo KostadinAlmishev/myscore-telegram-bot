@@ -89,8 +89,8 @@ public class BasketballParser {
     }
 
     private int getMinute(Element el) {
-        for (int i = 0; i < 15; i++) {
-            if (el.toString().contains("&nbsp;2")) {
+        for (int i = 15; i <= 0; i--) {
+            if (el.toString().contains("&nbsp;" + i)) {
                 return i;
             }
         }
