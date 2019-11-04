@@ -39,7 +39,8 @@ public class BrowserService implements AutoCloseable {
     @Override
     public void close() throws Exception {
         if (chromeDriver != null) {
-            chromeDriver.close();
+            // Don't close browser
+            chromeDriver.quit();
         }
     }
 
