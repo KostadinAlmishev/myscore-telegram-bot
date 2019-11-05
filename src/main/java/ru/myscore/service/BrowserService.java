@@ -3,14 +3,16 @@ package ru.myscore.service;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-
 public class BrowserService implements AutoCloseable {
 
     private long waitAfterWait = 10 * 1000;
     private ChromeDriver chromeDriver = null;
 
-    public BrowserService() {
+    private String urlAfterReloading = "";
+
+    public BrowserService(String url) {
         configDriver();
+        this.urlAfterReloading = url;
     }
 
     public long getWaitAfterWait() {
@@ -50,7 +52,7 @@ public class BrowserService implements AutoCloseable {
 
     public void reload() {
         synchronized (chromeDriver) {
-            chromeDriver.navigate().refresh();
+            chromeDriver.get(urlAfterReloading);
             try {
                 chromeDriver.wait(waitAfterWait);
             } catch (InterruptedException ignored) {}
@@ -62,7 +64,7 @@ public class BrowserService implements AutoCloseable {
 
         if (chromeDriver != null) {
             // Don't close browser
-            chromeDriver.quit();
+            // TODO chromeDriver.quit();
         }
     }
 

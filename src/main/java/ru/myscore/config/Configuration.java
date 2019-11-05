@@ -29,7 +29,7 @@ public class Configuration implements AutoCloseable, Runnable {
 
     public Configuration() {
         basketballParser = new BasketballParser();
-        browserService = new BrowserService();
+        browserService = new BrowserService(URL);
         basketballService = new BasketballService(browserService, basketballParser, URL);
         realTimeService = new RealTimeService(bot, basketballService);
 

@@ -2,7 +2,6 @@ package ru.myscore.service;
 
 import ru.myscore.nodes.BasketballMatch;
 import ru.myscore.parser.BasketballParser;
-import ru.myscore.parser.filter.BasketballDummyFilter;
 import ru.myscore.parser.filter.WinsFirstLoosesSecondAndThirdFilter;
 import ru.myscore.parser.filter.WinsFirstLoosesSecondAndThirdThirdQuarterFilter;
 
@@ -45,5 +44,4 @@ public class BasketballService {
     public void reload() {
         browserService.reload();
     }
-
 }
