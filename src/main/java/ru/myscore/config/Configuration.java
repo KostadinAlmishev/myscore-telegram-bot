@@ -31,17 +31,18 @@ public class Configuration implements AutoCloseable, Runnable {
         basketballParser = new BasketballParser();
         browserService = new BrowserService(URL);
         basketballService = new BasketballService(browserService, basketballParser, URL);
-        realTimeService = new RealTimeService(bot, basketballService);
 
         botConfig = new BotConfig(basketballService);
         bot = botConfig.getBot();
 
+        realTimeService = new RealTimeService(bot, basketballService);
     }
 
 
 
     @Override
     public void close() throws Exception {
+        bot.sendToCreator("Tried to close wtf...");
         browserService.close();
         for (Thread curr : threadsInside) {
             curr.interrupt();
