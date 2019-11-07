@@ -1,15 +1,14 @@
 package ru.myscore.telegram;
 
-import com.google.inject.internal.cglib.core.$CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.telegram.abilitybots.api.bot.AbilityBot;
 import org.telegram.abilitybots.api.objects.Ability;
+import org.telegram.abilitybots.api.objects.Privacy;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.myscore.nodes.BasketballMatch;
-import ru.myscore.nodes.BasketballQuarter;
 import ru.myscore.nodes.BasketballTeam;
 import ru.myscore.service.BasketballService;
 
@@ -120,6 +119,28 @@ public class Bot extends AbilityBot {
                 .action(ctx -> {
                     basketballService.reload();
                     silent.send("Reloaded", ctx.chatId());
+                })
+                .build();
+    }
+
+    public Ability debug() {
+        return Ability
+                .builder()
+                .name("debug")
+                .info("debug")
+                .locality(ALL)
+                .privacy(Privacy.CREATOR)
+                .action(ctx -> {
+                    basketballService.debug();
+                    List<BasketballMatch> matches =  basketballService.getAll();
+
+                    if (matches.isEmpty()) {
+                        silent.send("Can not find", ctx.chatId());
+                    } else {
+                        for (BasketballMatch match : matches) {
+                            silent.sendMd(formatMatch(match), ctx.chatId());
+                        }
+                    }
                 })
                 .build();
     }

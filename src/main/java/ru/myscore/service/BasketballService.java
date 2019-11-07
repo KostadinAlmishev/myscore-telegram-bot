@@ -1,5 +1,8 @@
 package ru.myscore.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.telegram.abilitybots.api.bot.AbilityBot;
 import ru.myscore.nodes.BasketballMatch;
 import ru.myscore.parser.BasketballParser;
 import ru.myscore.parser.filter.WinsFirstLoosesSecondAndThirdFilter;
@@ -8,7 +11,12 @@ import ru.myscore.parser.filter.WinsFirstLoosesSecondAndThirdThirdQuarterFilter;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+import static ru.myscore.logger.Log4j2Logger.MYAPP_MARKER;
+
 public class BasketballService {
+
+    private final Logger logger = LogManager.getLogger(AbilityBot.class);
+
     private BasketballParser basketballParser = null;
     private BrowserService browserService = null;
     private String url = "";
@@ -43,5 +51,9 @@ public class BasketballService {
 
     public void reload() {
         browserService.reload();
+    }
+
+    public void debug() {
+        logger.info(MYAPP_MARKER, "DEBUG " + browserService.getCurrSource());
     }
 }
