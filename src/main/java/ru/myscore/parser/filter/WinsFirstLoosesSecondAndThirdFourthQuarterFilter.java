@@ -4,7 +4,7 @@ import ru.myscore.nodes.BasketballMatch;
 import ru.myscore.nodes.BasketballQuarter;
 import ru.myscore.nodes.BasketballTeam;
 
-public class WinsFirstLoosesSecondAndThirdThirdQuarterFilter implements BasketballMatchFilter {
+public class WinsFirstLoosesSecondAndThirdFourthQuarterFilter implements BasketballMatchFilter {
 
 
     @Override
@@ -12,7 +12,7 @@ public class WinsFirstLoosesSecondAndThirdThirdQuarterFilter implements Basketba
         BasketballTeam a = m.getHome();
         BasketballTeam b = m.getAway();
 
-        return m.getCurrPart() == BasketballQuarter.THIRD && m.getCurrMinute() == 2 &&
+        return m.getCurrPart() == BasketballQuarter.FOURTH && m.getCurrMinute() == 2 &&
                 (_check(a, b) || _check(b, a));
     }
 

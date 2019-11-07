@@ -6,7 +6,7 @@ import org.telegram.abilitybots.api.bot.AbilityBot;
 import ru.myscore.nodes.BasketballMatch;
 import ru.myscore.parser.BasketballParser;
 import ru.myscore.parser.filter.WinsFirstLoosesSecondAndThirdFilter;
-import ru.myscore.parser.filter.WinsFirstLoosesSecondAndThirdThirdQuarterFilter;
+import ru.myscore.parser.filter.WinsFirstLoosesSecondAndThirdFourthQuarterFilter;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -23,8 +23,8 @@ public class BasketballService {
 
     // Filters
     private final WinsFirstLoosesSecondAndThirdFilter winsFirstLoosesSecondAndThirdFilter = new WinsFirstLoosesSecondAndThirdFilter();
-    private final WinsFirstLoosesSecondAndThirdThirdQuarterFilter winsFirstLoosesSecondAndThirdThirdQuarterFilter =
-            new WinsFirstLoosesSecondAndThirdThirdQuarterFilter();
+    private final WinsFirstLoosesSecondAndThirdFourthQuarterFilter winsFirstLoosesSecondAndThirdFourthQuarterFilter =
+            new WinsFirstLoosesSecondAndThirdFourthQuarterFilter();
 
     public BasketballService(@NotNull BrowserService browserService, @NotNull BasketballParser basketballParser, @NotNull String url) {
         this.browserService = browserService;
@@ -44,9 +44,9 @@ public class BasketballService {
         return basketballParser.parseMatches(src, winsFirstLoosesSecondAndThirdFilter);
     }
 
-    public List<BasketballMatch> getWonFirstLostSecondAndThirdThirdQuarter() {
+    public List<BasketballMatch> getWonFirstLostSecondAndThirdFourthQuarter() {
         String src = browserService.getCurrSource();
-        return basketballParser.parseMatches(src, winsFirstLoosesSecondAndThirdThirdQuarterFilter);
+        return basketballParser.parseMatches(src, winsFirstLoosesSecondAndThirdFourthQuarterFilter);
     }
 
     public void reload() {

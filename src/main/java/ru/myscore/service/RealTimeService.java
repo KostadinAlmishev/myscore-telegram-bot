@@ -21,7 +21,7 @@ public class RealTimeService implements Runnable {
     public void run() {
         while (true) {
 
-            List<BasketballMatch> matches = basketballService.getWonFirstLostSecondAndThirdThirdQuarter();
+            List<BasketballMatch> matches = basketballService.getWonFirstLostSecondAndThirdFourthQuarter();
 
             for (BasketballMatch match : matches) {
                 if (!history.contains(match)) {
