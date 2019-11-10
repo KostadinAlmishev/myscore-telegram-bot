@@ -38,8 +38,6 @@ public class Configuration implements AutoCloseable, Runnable {
         realTimeService = new RealTimeService(bot, basketballService);
     }
 
-
-
     @Override
     public void close() throws Exception {
         bot.sendToCreator("Tried to close wtf...");
