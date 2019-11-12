@@ -67,11 +67,15 @@ public class BrowserService implements AutoCloseable {
     public void close() {
 
         if (chromeDriver != null) {
-            chromeDriver.quit();
+            try {
+                chromeDriver.close();
+            } catch (Exception ignored) {}
 
             try {
                 Runtime.getRuntime().exec("pkill chrome");
             } catch(IOException ignored) { }
+
+            chromeDriver = null;
         }
     }
 
