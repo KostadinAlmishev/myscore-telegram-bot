@@ -25,20 +25,28 @@ public class BrowserService implements AutoCloseable {
         this.waitAfterWait = waitAfterWait;
     }
 
+    public String getUrlAfterReloading() {
+        return urlAfterReloading;
+    }
+
+    public void setUrlAfterReloading(String urlAfterReloading) {
+        this.urlAfterReloading = urlAfterReloading;
+    }
+
     public String getSource(String url) {
         synchronized (chromeDriver) {
             try {
                 chromeDriver.get(url);
                 try {
                     chromeDriver.wait(waitAfterWait);
-                } catch (InterruptedException ignored) { }
+                } catch (InterruptedException e) { e. printStackTrace(); }
 
                 return chromeDriver.getPageSource();
             } catch (Exception e) {
                 reload();
             }
+            return chromeDriver.getPageSource();
         }
-        return "";
     }
 
     public String getCurrSource() {
@@ -48,17 +56,20 @@ public class BrowserService implements AutoCloseable {
             } catch (Exception e) {
                 reload();
             }
+
+            return chromeDriver.getPageSource();
         }
-        return "";
     }
 
     public void reload() {
         synchronized (chromeDriver) {
             close();
             configDriver();
-            chromeDriver.get(urlAfterReloading);
+            // chromeDriver.get(urlAfterReloading);
             try {
-                chromeDriver.wait(waitAfterWait);
+                // `chromeDriver.wait(waitAfterWait);
+                chromeDriver.get(urlAfterReloading);
+                Thread.sleep(this.waitAfterWait);
             } catch (InterruptedException ignored) {}
         }
     }

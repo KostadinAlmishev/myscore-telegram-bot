@@ -31,6 +31,7 @@ public class BasketballService {
         this.basketballParser = basketballParser;
         this.url = url;
 
+        // Load first time
         browserService.getSource(url);
     }
 

@@ -31,7 +31,7 @@ public class RealTimeService implements Runnable {
             }
 
             try {
-                Thread.sleep(100 * 1000);
+                Thread.sleep(90 * 1000);
             } catch (InterruptedException ignored) { }
         }
 
