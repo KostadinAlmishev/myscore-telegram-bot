@@ -104,12 +104,15 @@ public class BasketballTeam {
             return false;
 
         BasketballTeam other = (BasketballTeam) obj;
-        return participant.equals(other.getParticipant()) &&
-                firstQuarter == other.firstQuarter &&
+        return participant.equals(other.getParticipant())
+                /*
+                && firstQuarter == other.firstQuarter &&
                 secondQuarter == other.secondQuarter &&
                 thirdQuarter == other.thirdQuarter &&
                 fourthQuarter == other.fourthQuarter &&
-                fifthQuarter == other.fifthQuarter;
+                fifthQuarter == other.fifthQuarter
+                */
+                ;
     }
 
     @Override
