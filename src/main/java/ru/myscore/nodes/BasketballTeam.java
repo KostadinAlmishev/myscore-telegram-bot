@@ -117,6 +117,6 @@ public class BasketballTeam {
 
     @Override
     public int hashCode() {
-        return participant.hashCode() + firstQuarter + secondQuarter + thirdQuarter + fourthQuarter + fifthQuarter;
+        return participant.hashCode() /*+ firstQuarter + secondQuarter + thirdQuarter + fourthQuarter + fifthQuarter*/;
     }
 }
