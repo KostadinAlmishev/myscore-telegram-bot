@@ -4,6 +4,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.IOException;
+import java.util.concurrent.Semaphore;
 
 public class BrowserService implements AutoCloseable {
 
@@ -11,6 +12,8 @@ public class BrowserService implements AutoCloseable {
     private ChromeDriver chromeDriver = null;
 
     private String urlAfterReloading = "";
+
+    private final Semaphore mutex = new Semaphore(1);
 
     public BrowserService(String url) {
         configDriver();
@@ -34,7 +37,7 @@ public class BrowserService implements AutoCloseable {
     }
 
     public String getSource(String url) {
-        synchronized (chromeDriver) {
+        synchronized (this) {
             try {
                 chromeDriver.get(url);
                 try {
@@ -50,7 +53,7 @@ public class BrowserService implements AutoCloseable {
     }
 
     public String getCurrSource() {
-        synchronized (chromeDriver) {
+        synchronized (this) {
             try {
                 return chromeDriver.getPageSource();
             } catch (Exception e) {
@@ -62,7 +65,7 @@ public class BrowserService implements AutoCloseable {
     }
 
     public void reload() {
-        synchronized (chromeDriver) {
+        synchronized (this) {
             close();
             configDriver();
             // chromeDriver.get(urlAfterReloading);
