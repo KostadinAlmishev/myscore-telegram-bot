@@ -15,10 +15,10 @@ public class BotConfig {
 
     private final Logger logger = LogManager.getLogger(BotConfig.class);
     private TelegramBotsApi botsApi;
-    private final String BOT_TOKEN = "952603441:AAE61EtjhdivhH3JPPe-kQR3UPKSfyzfWT4";
-    private final String BOT_USERNAME = "jkr6_bot";
+    private final String BOT_TOKEN = "";
+    private final String BOT_USERNAME = "";
 
-    // private final String PROXY_HOST = "150.140.195.222";
+    // private final String PROXY_HOST = "";
     // private final Integer PROXY_PORT = 1080;
 
     private Bot bot;
